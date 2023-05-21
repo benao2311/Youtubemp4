@@ -1,16 +1,20 @@
-const express = require('express');
-const ytdl = require('ytdl-core');
-const app = express();
-const port = 3000;
+function descargarVideo() {
+  var urlInput = document.getElementById('urlInput');
+  var urlVideo = urlInput.value;
 
-app.post('/descargar-video', (req, res) => {
-  const url = req.body.url; // La URL del video se recibe como parte del cuerpo de la solicitud POST
-  
-  // Validar la URL y realizar la descarga del video utilizando ytdl-core
-  ytdl(url).pipe(res); // Envía la respuesta con el video descargado al cliente
-});
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/descargar-video', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
 
-app.listen(port, () => {
-  console.log(`Servidor escuchando en el puerto ${port}`);
-});
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        alert('La descarga del video ha sido iniciada en el servidor.');
+      } else {
+        alert('Ocurrió un error al iniciar la descarga del video.');
+      }
+    }
+  };
 
+  xhr.send(JSON.stringify({ url: urlVideo }));
+}
