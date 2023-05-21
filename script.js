@@ -2,19 +2,22 @@ function descargarVideo() {
     var urlInput = document.getElementById('urlInput');
     var urlVideo = urlInput.value;
 
-    // Realiza una petición al servidor para descargar el video
-    // Puedes usar AJAX, fetch u otras técnicas aquí
-
-    // Ejemplo utilizando fetch y enviando la URL como parámetro en la URL de la petición
-    fetch('/descargar?video=' + encodeURIComponent(urlVideo))
-        .then(response => {
-            if (response.ok) {
-                alert('El video se ha descargado correctamente.');
-            } else {
-                alert('Ocurrió un error al descargar el video.');
-            }
-        })
-        .catch(error => {
-            console.error('Ocurrió un error:', error);
-        });
+    // Realiza una petición al servidor para iniciar la descarga del video
+    fetch('/descargar-video', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url: urlVideo })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('La descarga del video ha sido iniciada en el servidor.');
+        } else {
+            alert('Ocurrió un error al iniciar la descarga del video.');
+        }
+    })
+    .catch(error => {
+        console.error('Ocurrió un error:', error);
+    });
 }
